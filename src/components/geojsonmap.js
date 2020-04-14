@@ -1,21 +1,22 @@
 import React from 'react'
-import { Map as LeafletMap, GeoJSON, Marker, Popup, Tooltip } from 'react-leaflet';
+import { Map as LeafletMap, GeoJSON, Marker, Polyline, Popup, Tooltip } from 'react-leaflet';
 import jarod from '../data/j.jpg';
 import L from 'leaflet';
 import bcGeoJSON from '../data/BC.json';
 import bcParks from '../data/BCparks.json';
+import bcMajorFaults from '../data/major_faults.json';
 
 class GeoJsonMap extends React.Component {
   render() {
     const onEachPark = (feature, layer) => {
-      const TooltipContent = `<b><span style="font-size: 16px; color: #14a05a">${feature.properties.Pa_name}</span></b><br>
-      <span style="font-size: 13px; color: #383838">Provincial Park</span>`;
+      const TooltipContent = `<b><span style="font-size: 16px; color: #14a05a; float:left">${feature.properties.Pa_name}</span></b><br>
+      <span style="font-size: 13px; color: #383838; float:left">Provincial Park</span>`;
       
       layer.bindTooltip(TooltipContent);
       
       layer.on('mouseover', function () {
         this.setStyle({
-          'weight': '0.6',
+          'weight': '1',
           'color': '#23bb81',
           'fillColor': '#bbfedd'
         });
@@ -61,7 +62,14 @@ class GeoJsonMap extends React.Component {
             color: '#066200',
             weight: 0.2,
             fillColor: "#8dd587",
-            fillOpacity: 0.8,
+            fillOpacity: 0.7,
+          })} >
+		</GeoJSON>
+    <GeoJSON
+          data={bcMajorFaults}
+
+          style={() => ({
+          zindex : 9000
           })} >
 		</GeoJSON>
 {/* 		<Marker 
