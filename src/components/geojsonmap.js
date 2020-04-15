@@ -12,10 +12,11 @@ import { Map as
   from 'react-leaflet';
 import L from 'leaflet';
 import {antPath} from 'leaflet-ant-path';
+
 import bcGeoJSON from '../data/BC.json';
-import bcParks from '../data/BCparks.json';
+import bcParks from '../data/bcparks.json';
 import bcMajorFaults from '../data/major_faults.json';
-import southVIgeology from '../data/vigeo.json';
+import geology from '../data/geology.json';
 import BCminfile from '../data/minfile.json'
 
 class GeoJsonMap extends React.Component {
@@ -52,8 +53,8 @@ class GeoJsonMap extends React.Component {
   render() {
     // park tooltip
     const onEachPark = (feature, layer) => {
-      const TooltipContent = `<b><span style="font-size: 16px; color: #14a05a; float:left">${feature.properties.Pa_name}</span></b><br>
-      <span style="font-size: 13px; color: #383838; float:left">Provincial Park</span>`;
+      const TooltipContent = `<b><span style="font-size: 14px; color: #14a05a; float:left">${feature.properties.Pa_name}</span></b><br>
+      <span style="font-size: 11px; color: #383838; float:left">Provincial Park</span>`;
       
       layer.bindTooltip(TooltipContent);
       
@@ -76,7 +77,7 @@ class GeoJsonMap extends React.Component {
 
      // rock tooltip
      const onEachRock = (feature, layer) => {
-      const TooltipContent = `<span style="font-size: 11px; float:left">${feature.properties.strat_unit}: ${feature.properties.strat_name}</span>`;
+      const TooltipContent = `<span style="font-size: 11px; float:left"><b>${feature.properties.strat_unit}:</b> ${feature.properties.strat_name}</span>`;
       
       layer.bindTooltip(TooltipContent);
       
@@ -97,7 +98,10 @@ class GeoJsonMap extends React.Component {
 
     return (
       <LeafletMap
-        center={[49.65, -124.5]}
+      // VIsland
+        center={[49.65, -125.5]}
+      // golden triangle
+        // center={[56.8, -130.4]}
         zoom={8}
         zoomDelta = {0.01}
         zoomSnap = {0.01}
@@ -120,7 +124,7 @@ class GeoJsonMap extends React.Component {
           })}
         />
       <GeoJSON
-          data={southVIgeology}
+          data={geology}
           onEachFeature = {onEachRock}
           style={this.geologystyle} 
           />
