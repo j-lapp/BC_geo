@@ -39,7 +39,7 @@ class GeoJsonMap extends React.Component {
     return {
       fillColor: this.giveColor(rock_class),
       color: '#3b3b3b',
-      weight: '0.1'
+      weight: '0.05'
 
     };
   };
@@ -84,7 +84,7 @@ class GeoJsonMap extends React.Component {
       });
       layer.on('mouseout', function () {
         this.setStyle({
-          'weight': '0.1',
+          'weight': '0.05',
           'color' : '#3b3b3b'
         });
       });
@@ -125,19 +125,17 @@ class GeoJsonMap extends React.Component {
             color: '#066200',
             fillColor : '#8dd587',
             weight: 0.2,
-            fillOpacity: 0.65
+            fillOpacity: 0.5 
         })}
 		/>
-    		
-            
-		{/* <Marker 
-            position={[48.37, -123.38]}
-            icon={iconPerson}
-        >
-          <Popup>
-            Popup for any custom information.
-          </Popup>
-        </Marker> */}
+    		<GeoJSON
+          data={bcMajorFaults}
+          style= { () => ({ 
+            color: '#1d1d1d',
+            weight: 1.5,
+            opacity: 0.9 
+        })}
+		/>
       </LeafletMap>
     );
   }
