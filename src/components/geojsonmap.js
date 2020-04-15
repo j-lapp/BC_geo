@@ -5,15 +5,18 @@ import { Map as
   LayerGroup,
   GeoJSON, 
   Marker, 
+  CircleMarker,
   Polyline, 
   Popup, 
   Tooltip } 
   from 'react-leaflet';
 import L from 'leaflet';
+import {antPath} from 'leaflet-ant-path';
 import bcGeoJSON from '../data/BC.json';
 import bcParks from '../data/BCparks.json';
 import bcMajorFaults from '../data/major_faults.json';
 import southVIgeology from '../data/vigeo.json';
+import BCminfile from '../data/minfile.json'
 
 class GeoJsonMap extends React.Component {
 
@@ -24,6 +27,8 @@ class GeoJsonMap extends React.Component {
       case "metamorphic rocks":
         return "#cd9bff";
       case "volcanic rocks":
+        return "#004226";
+      case "volcanic and sedimentary rocks":
         return "#004226";
       case "intrusive rocks":
         return "#ffa3b4";
@@ -92,11 +97,12 @@ class GeoJsonMap extends React.Component {
 
     return (
       <LeafletMap
-        center={[48.69, -123.8]}
-        zoom={9.5}
+        center={[49.65, -124.5]}
+        zoom={8}
         zoomDelta = {0.01}
         zoomSnap = {0.01}
         maxZoom = {13}
+        minZoom = {6}
         attributionControl={true}
         zoomControl={false}
         doubleClickZoom={false}
@@ -125,7 +131,7 @@ class GeoJsonMap extends React.Component {
             color: '#066200',
             fillColor : '#8dd587',
             weight: 0.2,
-            fillOpacity: 0.5 
+            fillOpacity: 0.6 
         })}
 		/>
     		<GeoJSON
@@ -133,9 +139,18 @@ class GeoJsonMap extends React.Component {
           style= { () => ({ 
             color: '#1d1d1d',
             weight: 0.9,
-            opacity: 0.9 
+            opacity: 0.9,
+            dashArray: [4]
         })}
 		/>
+        {/* <GeoJSON
+          data={BCminfile}
+          style= { () => ({ 
+            color: '#1d1d1d',
+            weight: 0.9,
+            opacity: 0.9 
+        })}
+		/> */}
       </LeafletMap>
     );
   }
