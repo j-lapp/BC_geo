@@ -132,7 +132,7 @@ class GeoJsonMap extends React.Component {
           data={bcMajorFaults}
           style= { () => ({ 
             color: '#1d1d1d',
-            weight: 1.5,
+            weight: 0.9,
             opacity: 0.9 
         })}
 		/>
