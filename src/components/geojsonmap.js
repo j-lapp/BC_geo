@@ -77,14 +77,13 @@ class GeoJsonMap extends React.Component {
 
   //  minfile tooltip
   const onEachMinfile = (feature, layer) => {
-    const PopupContent = `<b><a href="${feature.properties.URL}" target="_blank" style = "color: #ee5859"><span style="font-size: 11px">${feature.properties.MINFILNO} - ${feature.properties.NAMES}</a></b><br>
-    ${feature.properties.COMMODIT_D}<br>${feature.properties.DEPOTYPE_D}</span>`;
+    const PopupContent = `<b><a href="${feature.properties.URL}" target="_blank" style = "color: #ee5859"><span style="font-size: 9px">${feature.properties.MINFILNO} - ${feature.properties.NAMES}</span></a></b><br>
+    <span style="font-size: 9px">${feature.properties.COMMODIT_D}</span>`;
     
     layer.bindPopup(PopupContent, {closeButton: false, opacity: '0.5'});
 
-    const TooltipContent = `<b><span style="font-size: 9px; color: #383838; float:left">${feature.properties.COMMODIT_D}</span></b>`;
-    
-    layer.bindTooltip(TooltipContent);
+    // const TooltipContent = `<b><span style="font-size: 9px; color: #383838; float:left">${feature.properties.COMMODIT_D}</span></b>`;    
+    // layer.bindTooltip(TooltipContent);
     
     // minfile mouseover
     layer.on('mouseover', function () {
