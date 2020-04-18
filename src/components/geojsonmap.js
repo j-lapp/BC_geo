@@ -15,9 +15,10 @@ import {antPath} from 'leaflet-ant-path';
 
 import bcGeoJSON from '../data/BC.json';
 import bcParks from '../data/bcparks.json';
-import bcMajorFaults from '../data/major_faults.json';
+import faults from '../data/faults.json';
 import geology from '../data/geology.json';
 import BCminfile from '../data/minfile.json'
+import rivers from '../data/rivers.json'
 
 class GeoJsonMap extends React.Component {
 
@@ -50,13 +51,65 @@ class GeoJsonMap extends React.Component {
     };
   };
 
+  giveColor = minfile_class => {
+    switch (minfile_class) {
+      case "sedimentary rocks":
+        return "#ffd971";
+      case "metamorphic rocks":
+        return "#cd9bff";
+      case "volcanic rocks":
+        return "#004226";
+      case "volcanic and sedimentary rocks":
+        return "#004226";
+      case "intrusive rocks":
+        return "#ffa3b4";
+      default:
+        return "#fafafa";
+    }
+  };
+
   render() {
+
+    // Change minfile marker to circle  
+    const minfilePointToLayer = (feature, latlng) => {
+      return L.circleMarker(latlng, null); 
+   }
+
+  //  minfile tooltip
+  const onEachMinfile = (feature, layer) => {
+    const PopupContent = `<b><a href="${feature.properties.URL}" target="_blank" style = "color: #ee5859"><span style="font-size: 11px">${feature.properties.MINFILNO} - ${feature.properties.NAMES}</a></b><br>
+    ${feature.properties.COMMODIT_D}<br>${feature.properties.DEPOTYPE_D}</span>`;
+    
+    layer.bindPopup(PopupContent, {closeButton: false, opacity: '0.5'});
+
+    const TooltipContent = `<b><span style="font-size: 9px; color: #383838; float:left">${feature.properties.COMMODIT_D}</span></b>`;
+    
+    layer.bindTooltip(TooltipContent);
+    
+    // minfile mouseover
+    layer.on('mouseover', function () {
+      this.setStyle({
+        'weight': '1',
+        'color': '#ee5859',
+        'fillColor': '#ee5859'
+      });
+    });
+          layer.on('mouseout', function () {
+        this.setStyle({ 
+          'color': '#1d1d1d',
+          'fillColor': 'white',
+          'weight': '0.5'
+        });
+      });
+    };
+
     // park tooltip
     const onEachPark = (feature, layer) => {
       const TooltipContent = `<b><span style="font-size: 14px; color: #14a05a; float:left">${feature.properties.Pa_name}</span></b><br>
       <span style="font-size: 11px; color: #383838; float:left">Provincial Park</span>`;
       
-      layer.bindTooltip(TooltipContent);
+      
+      layer.bindTooltip(TooltipContent, {sticky: true, color: '#8dd587'});
       
       // park mouseover
       layer.on('mouseover', function () {
@@ -66,22 +119,23 @@ class GeoJsonMap extends React.Component {
           'fillColor': '#bbfedd'
         });
       });
-      layer.on('mouseout', function () {
-        this.setStyle({
-          'fillColor': '#8dd587',
-          'color': '#066200',
-          'weight': '0.3'
+
+          layer.on('mouseout', function () {
+            this.setStyle({
+              'fillColor': '#8dd587',
+              'color': '#066200',
+              'weight': '0.3'
         });
       });
     };
 
-     // rock tooltip
+     // geology tooltip
      const onEachRock = (feature, layer) => {
       const TooltipContent = `<span style="font-size: 11px; float:left"><b>${feature.properties.strat_unit}:</b> ${feature.properties.strat_name}</span>`;
       
-      layer.bindTooltip(TooltipContent);
+      layer.bindTooltip(TooltipContent, {sticky: true, fillColor: 'black'});
       
-      // rock mouseover
+      // geology mouseover
       layer.on('mouseover', function () {
         this.setStyle({
           'weight': '2',
@@ -99,10 +153,12 @@ class GeoJsonMap extends React.Component {
     return (
       <LeafletMap
       // VIsland
-        center={[49.65, -125.5]}
+        center={[49.65, -125.3]}
+        zoom={8}
       // golden triangle
         // center={[56.8, -130.4]}
-        zoom={8}
+        // zoom={8}
+
         zoomDelta = {0.01}
         zoomSnap = {0.01}
         maxZoom = {13}
@@ -120,7 +176,7 @@ class GeoJsonMap extends React.Component {
           style={() => ({
             color: '#232323',
             weight: 0.6,
-            fillColor: "#d7d7d7"
+            fillColor: "white"
           })}
         />
       <GeoJSON
@@ -138,8 +194,16 @@ class GeoJsonMap extends React.Component {
             fillOpacity: 0.6 
         })}
 		/>
+    {/* <GeoJSON
+          data={rivers}
+          style= { () => ({ 
+            color: '#2b68a5',
+            weight: 0.5,
+            opacity: 0.5
+        })}
+		/> */}
     		<GeoJSON
-          data={bcMajorFaults}
+          data={faults}
           style= { () => ({ 
             color: '#1d1d1d',
             weight: 0.9,
@@ -147,14 +211,19 @@ class GeoJsonMap extends React.Component {
             dashArray: [4]
         })}
 		/>
-        {/* <GeoJSON
+        <GeoJSON
           data={BCminfile}
+          pointToLayer = {minfilePointToLayer}
+          onEachFeature = {onEachMinfile}
           style= { () => ({ 
             color: '#1d1d1d',
-            weight: 0.9,
-            opacity: 0.9 
+            fillColor: 'white',
+            radius: 2.4,
+            weight: 0.5,
+            opacity: 0.5,
+            fillOpacity: 1
         })}
-		/> */}
+		/>
       </LeafletMap>
     );
   }
