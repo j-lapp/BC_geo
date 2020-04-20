@@ -71,7 +71,6 @@ class GeoJsonMap extends React.Component {
   // };
 
 
-  
   render() {
 
     // Change markers to circle  
@@ -139,15 +138,15 @@ class GeoJsonMap extends React.Component {
     // CLAIMS ////////////////////////////////////////////
       //  claims tooltip
       const onEachClaim = (feature, layer) => {
-        const TooltipContent = `<b><span style="font-size: 9px">${feature.properties.OWNER_NAME}</span></b><br>
-        <span style="font-size: 9px">${feature.properties.TNRTPDSCRP} claim</span>`;
+        const TooltipContent = `<b><span style="font-size: 11px; color: #880012; float:left">${feature.properties.OWNER_NAME}</span></b><br>
+        <span style="font-size: 9px; float:left">${feature.properties.TNRTPDSCRP} claim</span>`;
 
         layer.bindTooltip(TooltipContent);
         
         //claims mouseover
         layer.on('mouseover', function () {
           this.setStyle({
-            'weight': '2',
+            'weight': '1.3',
             'color' : '#880012',
             'fillColor': '#ffa3af'
           });
@@ -157,7 +156,6 @@ class GeoJsonMap extends React.Component {
             'color': '#ae0011',
             'fillColor' : '#ff6567',
             'weight': '0.08'
-
           });
         });
     
@@ -166,7 +164,7 @@ class GeoJsonMap extends React.Component {
 // MINFILE ////////////////////////////////////////////
       //  minfile tooltip
       const onEachMinfile = (feature, layer) => {
-        const PopupContent = `<b><a href="${feature.properties.URL}" target="_blank" style = "color: #e0a800"><span style="font-size: 9px">${feature.properties.MINFILNO} - ${feature.properties.NAMES}</span></a></b><br>
+        const PopupContent = `<b><a href="${feature.properties.URL}" target="_blank" style = "color: #d05d00"><span style="font-size: 9px">${feature.properties.MINFILNO} - ${feature.properties.NAMES}</span></a></b><br>
         <span style="font-size: 9px">${feature.properties.COMMODIT_D}</span>`;
         
         layer.bindPopup(PopupContent, {closeButton: false, opacity: '0.5'});
@@ -178,15 +176,15 @@ class GeoJsonMap extends React.Component {
         layer.on('mouseover', function () {
           this.setStyle({
             'weight': '4',
-            'color' : '#feb600',
-            'fillColor': '#feb600'
+            'color' : '#d05d00',
+            'fillColor': '#d05d00'
           });
         });
         layer.on('mouseout', function () {
           this.setStyle({
             'weight': '0.6',
-            'color': '#1d1d1d',
-            'fillColor': 'white'
+            'color': '#d05d00',
+            'fillColor': '#ffe8cd'
 
           });
         });
@@ -199,24 +197,6 @@ class GeoJsonMap extends React.Component {
       const TooltipContent = `<span style="font-size: 9px; float:left"><b>${feature.properties.Au_display}</b> ppb Au in silt</span>`;
       
       layer.bindTooltip(TooltipContent);
-
-        // minfile mouseover
-        // layer.on('mouseover', function () {
-        //   this.setStyle({
-        //     'radius': '4',
-        //     'color': '#fffc9b',
-        //     'fillColor': '#fffc9b'
-        //   });
-        // });
-        // layer.on('mouseout', function () {
-        //     this.setStyle({ 
-        //       'color': '#b2a743',
-        //       'fillColor': '#ffe601',
-        //       'radius': '2.8',
-        //       'opacity': '0.7',
-        //       'fillOpacity': '0.9'
-        //     });
-        //   });
     
         };
 
@@ -296,8 +276,8 @@ class GeoJsonMap extends React.Component {
           pointToLayer = {markerToCircle}
           onEachFeature = {onEachMinfile}
           style= { () => ({ 
-            color: '#1d1d1d',
-            fillColor: 'white',
+            color: '#d05d00',
+            fillColor: '#ffe8cd',
             radius: 2.4,
             weight: 0.6,
             opacity: 0.5,
