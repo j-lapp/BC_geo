@@ -36,3 +36,45 @@
     transform: rotate(360deg);
   }
 }
+
+.parktooltipCSS {
+  background: white;
+  border: 1px solid #23bb81;
+  line-height: 30%;
+  padding-top: 1px;
+  padding-bottom: 10px;
+}
+.leaflet-tooltip-left.parktooltipCSS::before {
+  border-left-color: #23bb81;
+}
+.leaflet-tooltip-right.parktooltipCSS::before {
+  border-right-color: #23bb81;
+}
+
+.parktooltipCSS p {
+font-family: Arial, Helvetica, sans-serif;
+font-size: 13px; 
+color: #14a05a; 
+float:left
+}
+
+.claimstooltipCSS {
+  background: white;
+  border: 1px solid #ff6567;
+  line-height: 30%;
+  padding-top: 1px;
+  padding-bottom: 10px;
+}
+.leaflet-tooltip-left.claimstooltipCSS::before {
+  border-left-color: #ff6567;
+}
+.leaflet-tooltip-right.claimstooltipCSS::before {
+  border-right-color: #ff6567;
+}
+
+.claimstooltipCSS p {
+font-family: Arial, Helvetica, sans-serif;
+font-size: 11px; 
+color: #ae0011; 
+float:left
+}

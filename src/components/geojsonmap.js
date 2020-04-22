@@ -3,14 +3,12 @@ import { Map as
   LeafletMap, 
   LayersControl,
   LayerGroup,
-  GeoJSON, 
-  Marker, 
-  CircleMarker,
-  Polyline, 
-  Popup, 
-  Tooltip } 
+  GeoJSON } 
   from 'react-leaflet';
 import L from 'leaflet';
+
+import Control from '@skyeer/react-leaflet-custom-control'
+import { BoxZoomControl } from 'react-leaflet-box-zoom'
 import {antPath} from 'leaflet-ant-path';
 
 import bcGeoJSON from '../data/BC.json';
@@ -22,8 +20,11 @@ import rivers from '../data/rivers.json'
 import auSilts from '../data/au_silts.json'
 import claims from '../data/min_claims.json'
 
+const { BaseLayer, Overlay } = LayersControl
+
 class GeoJsonMap extends React.Component {
 
+// geology layer colour scheme
   giveColor = rock_class => {
     switch (rock_class) {
       case "sedimentary rocks":
@@ -41,6 +42,7 @@ class GeoJsonMap extends React.Component {
     }
   };
 
+// geology layer style
   geologystyle = feature => {
     const {
       properties: { rock_class }
@@ -85,11 +87,11 @@ class GeoJsonMap extends React.Component {
 // PARKS ////////////////////////////////////////////
     // park tooltip
     const onEachPark = (feature, layer) => {
-      const TooltipContent = `<b><span style="font-size: 13px; color: #14a05a; float:left">${feature.properties.Pa_name}</span></b><br>
+      const TooltipContent = `<p>${feature.properties.Pa_name}</p><br>
       <span style="font-size: 9px; color: #383838; float:left">Provincial Park</span>`;
       
       
-      layer.bindTooltip(TooltipContent, {sticky: true, color: '#8dd587'});
+      layer.bindTooltip(TooltipContent, {sticky: true, className: 'parktooltipCSS'});
       
       // park mouseover
       layer.on('mouseover', function () {
@@ -138,10 +140,10 @@ class GeoJsonMap extends React.Component {
     // CLAIMS ////////////////////////////////////////////
       //  claims tooltip
       const onEachClaim = (feature, layer) => {
-        const TooltipContent = `<b><span style="font-size: 11px; color: #880012; float:left">${feature.properties.OWNER_NAME}</span></b><br>
+        const TooltipContent = `<p>${feature.properties.OWNER_NAME}</p><br>
         <span style="font-size: 9px; float:left">${feature.properties.TNRTPDSCRP} claim</span>`;
 
-        layer.bindTooltip(TooltipContent);
+        layer.bindTooltip(TooltipContent, {className: 'claimstooltipCSS'});
         
         //claims mouseover
         layer.on('mouseover', function () {
@@ -167,7 +169,7 @@ class GeoJsonMap extends React.Component {
         const PopupContent = `<b><a href="${feature.properties.URL}" target="_blank" style = "color: #d05d00"><span style="font-size: 9px">${feature.properties.MINFILNO} - ${feature.properties.NAMES}</span></a></b><br>
         <span style="font-size: 9px">${feature.properties.COMMODIT_D}</span>`;
         
-        layer.bindPopup(PopupContent, {closeButton: false, opacity: '0.5'});
+        layer.bindPopup(PopupContent, {closeButton: false});
     
         // const TooltipContent = `<b><span style="font-size: 9px; color: #383838; float:left">${feature.properties.COMMODIT_D}</span></b>`;    
         // layer.bindTooltip(TooltipContent);
@@ -176,8 +178,8 @@ class GeoJsonMap extends React.Component {
         layer.on('mouseover', function () {
           this.setStyle({
             'weight': '4',
-            'color' : '#d05d00',
-            'fillColor': '#d05d00'
+            'color' : '#ffab01',
+            'fillColor': '#ffab01'
           });
         });
         layer.on('mouseout', function () {
@@ -188,7 +190,6 @@ class GeoJsonMap extends React.Component {
 
           });
         });
-    
         };
 
 // SILTS ////////////////////////////////////////////    
@@ -201,14 +202,13 @@ class GeoJsonMap extends React.Component {
         };
 
     return (
-      <LeafletMap
+<LeafletMap
       // VIsland
         center={[49.65, -125.3]}
         zoom={8}
       // golden triangle
         // center={[56.8, -130.1]}
         // zoom={9.5}
-
         zoomDelta = {0.01}
         zoomSnap = {0.01}
         maxZoom = {13}
@@ -221,6 +221,8 @@ class GeoJsonMap extends React.Component {
         animate={true}
         easeLinearity={0.35}
       >
+      <LayersControl 
+          collapsed = {false}>
       <GeoJSON
           data={bcGeoJSON}
           style={() => ({
@@ -271,6 +273,7 @@ class GeoJsonMap extends React.Component {
             dashArray: [4]
         })}
 		/>
+     <Overlay checked name="Minfile">
         <GeoJSON
           data={BCminfile}
           pointToLayer = {markerToCircle}
@@ -284,6 +287,8 @@ class GeoJsonMap extends React.Component {
             fillOpacity: 0.9
         })}
 		/>
+    </Overlay>
+     <Overlay checked name="Au silts">
         <GeoJSON
           data={auSilts}
           pointToLayer = {siltToCircle}
@@ -297,7 +302,13 @@ class GeoJsonMap extends React.Component {
             fillOpacity: 0.9
         })}
 		/>
-      </LeafletMap>
+    </Overlay>
+    </LayersControl>
+    <BoxZoomControl 
+            position="topleft"
+            sticky={false}
+          />
+</LeafletMap>
     );
   }
 }
