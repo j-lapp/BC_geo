@@ -2,14 +2,17 @@ import React from 'react'
 import { Map as 
   LeafletMap, 
   LayersControl,
+  withLeaflet, 
+  MapControl,
   LayerGroup,
+  ZoomControl,
+  TileLayer,
   GeoJSON } 
   from 'react-leaflet';
 import L from 'leaflet';
 
-import Control from '@skyeer/react-leaflet-custom-control'
+import Control from 'react-leaflet-control';
 import { BoxZoomControl } from 'react-leaflet-box-zoom'
-import {antPath} from 'leaflet-ant-path';
 
 import bcGeoJSON from '../data/BC.json';
 import bcParks from '../data/bcparks.json';
@@ -20,9 +23,12 @@ import rivers from '../data/rivers.json'
 import auSilts from '../data/au_silts.json'
 import claims from '../data/min_claims.json'
 
+import MapInfo from "./MapInfo";
+
 const { BaseLayer, Overlay } = LayersControl
 
 class GeoJsonMap extends React.Component {
+
 
 // geology layer colour scheme
   giveColor = rock_class => {
@@ -54,24 +60,6 @@ class GeoJsonMap extends React.Component {
 
     };
   };
-
-  // giveColor = minfile_class => {
-  //   switch (minfile_class) {
-  //     case "sedimentary rocks":
-  //       return "#ffd971";
-  //     case "metamorphic rocks":
-  //       return "#cd9bff";
-  //     case "volcanic rocks":
-  //       return "#004226";
-  //     case "volcanic and sedimentary rocks":
-  //       return "#004226";
-  //     case "intrusive rocks":
-  //       return "#ffa3b4";
-  //     default:
-  //       return "#fafafa";
-  //   }
-  // };
-
 
   render() {
 
@@ -132,9 +120,6 @@ class GeoJsonMap extends React.Component {
           'color' : '#3b3b3b'
         });
       });
-    //   layer.on('click', function (e) { 
-    //     this.feature.GeoJsonMap.fitBounds(e.target.getBounds());
-    // });
     };
 
     // CLAIMS ////////////////////////////////////////////
@@ -143,7 +128,7 @@ class GeoJsonMap extends React.Component {
         const TooltipContent = `<p>${feature.properties.OWNER_NAME}</p><br>
         <span style="font-size: 9px; float:left">${feature.properties.TNRTPDSCRP} claim</span>`;
 
-        layer.bindTooltip(TooltipContent, {className: 'claimstooltipCSS'});
+        layer.bindTooltip(TooltipContent, {sticky: true, className: 'claimstooltipCSS'});
         
         //claims mouseover
         layer.on('mouseover', function () {
@@ -166,10 +151,10 @@ class GeoJsonMap extends React.Component {
 // MINFILE ////////////////////////////////////////////
       //  minfile tooltip
       const onEachMinfile = (feature, layer) => {
-        const PopupContent = `<b><a href="${feature.properties.URL}" target="_blank" style = "color: #d05d00"><span style="font-size: 9px">${feature.properties.MINFILNO} - ${feature.properties.NAMES}</span></a></b><br>
+        const PopupContent = `<p><a href="${feature.properties.URL}" target="_blank" style = "color: #d05d00">${feature.properties.MINFILNO} - ${feature.properties.NAMES}</a></p>
         <span style="font-size: 9px">${feature.properties.COMMODIT_D}</span>`;
         
-        layer.bindPopup(PopupContent, {closeButton: false});
+        layer.bindPopup(PopupContent, {closeButton: false, className: 'minfilePopupCSS'});
     
         // const TooltipContent = `<b><span style="font-size: 9px; color: #383838; float:left">${feature.properties.COMMODIT_D}</span></b>`;    
         // layer.bindTooltip(TooltipContent);
@@ -197,9 +182,10 @@ class GeoJsonMap extends React.Component {
      const onEachSilt = (feature, layer) => {
       const TooltipContent = `<span style="font-size: 9px; float:left"><b>${feature.properties.Au_display}</b> ppb Au in silt</span>`;
       
-      layer.bindTooltip(TooltipContent);
+      layer.bindTooltip(TooltipContent, {className: 'siltstooltipCSS'});
     
         };
+
 
     return (
 <LeafletMap
@@ -220,6 +206,7 @@ class GeoJsonMap extends React.Component {
         dragging={true}
         animate={true}
         easeLinearity={0.35}
+        background-color= {'#232323'}
       >
       <LayersControl 
           collapsed = {false}>
@@ -236,6 +223,17 @@ class GeoJsonMap extends React.Component {
           onEachFeature = {onEachRock}
           style={this.geologystyle} 
           />
+        <Overlay checked name="Faults">
+      <GeoJSON
+          data={faults}
+          style= { () => ({ 
+            color: '#1d1d1d',
+            weight: 0.9,
+            opacity: 0.9,
+            dashArray: [4]
+        })}
+		  />
+        </Overlay>
 		<GeoJSON
           data={bcParks}
           onEachFeature = {onEachPark}
@@ -246,34 +244,27 @@ class GeoJsonMap extends React.Component {
             fillOpacity: 0.5 
         })}
 		/>
-    {/* <GeoJSON
+        {/* <Overlay checked name="Rivers"> 
+    <GeoJSON
           data={rivers}
           style= { () => ({ 
             color: '#2b68a5',
             weight: 0.5,
             opacity: 0.5
         })}
-		/> */}
+		/>
+    </Overlay>    */}
     		<GeoJSON
           data={claims}
           onEachFeature = {onEachClaim}
           style= { () => ({ 
             color: '#ae0011',
-            fillColor : '#ff6567',
+          fillColor : '#ff6567',
             weight: 0.08,
             fillOpacity: 0.6 
         })}
 		/>
-    		<GeoJSON
-          data={faults}
-          style= { () => ({ 
-            color: '#1d1d1d',
-            weight: 0.9,
-            opacity: 0.9,
-            dashArray: [4]
-        })}
-		/>
-     <Overlay checked name="Minfile">
+     <Overlay unchecked name="Minfile">
         <GeoJSON
           data={BCminfile}
           pointToLayer = {markerToCircle}
@@ -288,7 +279,7 @@ class GeoJsonMap extends React.Component {
         })}
 		/>
     </Overlay>
-     <Overlay checked name="Au silts">
+     <Overlay unchecked name="Au silts">
         <GeoJSON
           data={auSilts}
           pointToLayer = {siltToCircle}

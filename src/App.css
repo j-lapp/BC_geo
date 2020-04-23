@@ -78,3 +78,139 @@ font-size: 11px;
 color: #ae0011; 
 float:left
 }
+
+.siltstooltipCSS {
+  background: white;
+  border: 1px solid #fffa5d;
+}
+.leaflet-tooltip-left.siltstooltipCSS::before {
+  border-left-color: #fffa5d;
+}
+.leaflet-tooltip-right.siltstooltipCSS::before {
+  border-right-color: #fffa5d;
+}
+
+
+.minfilePopupCSS {
+  float:left;
+  padding: 10px 15px 10px 10px;
+}
+
+.minfilePopupCSS p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px; 
+  color: #d05d00; 
+  float:left
+  }
+
+
+.siltstooltipCSS {
+  background: white;
+  border: 1px solid #fffa5d;
+}
+.leaflet-tooltip-left.siltstooltipCSS::before {
+  border-left-color: #fffa5d;
+}
+.leaflet-tooltip-right.siltstooltipCSS::before {
+  border-right-color: #fffa5d;
+}
+
+
+  .leaflet-control-layers-expanded { 
+  background: #efefef;
+  fill-opacity: 0.5;
+  border: 1px solid #4a4a4a;
+  font-family: 'arial';
+  font-size: 14px;
+  line-height: 2em;
+  margin: 0px 20px 0px 3px;
+  color: #4a4a4a;
+  padding: 10px 15px 10px 10px;
+  box-shadow: -2px 2px 3px 0px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+.leaflet-control-layers-expanded label{ 
+align-items: left;
+}
+
+.leaflet-control-layers-expanded input[type="checkbox"] {
+  box-sizing: border-box;
+  position: relative;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-appearance: none;
+}
+
+.leaflet-control-layers-expanded input[type="checkbox"] {
+  -webkit-appearance: none;
+  height: 10;
+  opacity: 0.8;
+  float: left;
+  height: 20px;
+  width: 20px;
+  transition: all .2s;
+	background-color: #ffffff;
+  border: 1px solid #4a4a4a;
+  outline-color: rgba(201, 76, 76, 0);
+  outline-width: 0;
+  box-shadow: -2px 2px 3px 0px rgba(0,0,0,0.4);
+  margin: 0px 10px 0px 0px;
+  text-align:center;
+}
+
+.leaflet-control-layers-expanded input[type="checkbox"]:hover {
+  border: 1.5px solid #4a4a4a;
+  opacity: 0.6;
+}
+
+.leaflet-control-layers-expanded::selection input[type="checkbox"] {
+  outline-color: #4a4a4a;
+}
+
+.leaflet-control-layers-expanded input[type="checkbox"]:active, .leaflet-control-layers-expanded input[type="checkbox"]:checked:active {
+  outline-color: #4a4a4a;
+  background-color: #4a4a4a;
+  color: #ffffff;
+}
+
+.leaflet-control-layers-expanded input[type="checkbox"]:checked:before {
+	background-color: #4a4a4a;
+  border: 1px solid #adb8c0;
+  color: #ffffff;
+}
+
+
+.leaflet-control-layers-expanded input[type="checkbox"]:checked {
+  height: 20px;
+  width: 20px;
+  border: 0.8px solid #4a4a4a;
+  background-color: #767676;
+}
+
+.leaflet-control-layers-expanded input[type="checkbox"]:checked:after {
+  content: '\2713\0020';
+  top: .35em; left: .5em;
+  transform: scale(1);
+	font-size: 10px;
+	position: absolute;
+  color: #ffffff;
+  outline-color: #4a4a4a;
+  font-family: 'Lucida Sans Unicode', 'Arial Unicode MS', Arial;
+  vertical-align: middle;
+}
+
+.leaflet-control-layers-expanded input[type="checkbox"]:checked:hover {
+	font-size: 8px;
+  color: #4a4a4a;
+  border: 1.5px solid #4a4a4a;
+} 
+
+
+
+
+
